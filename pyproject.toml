@@ -1,0 +1,19 @@
+[tool.poetry]
+name = "pokercds"
+version = "0.1.0"
+description = ""
+authors = ["Marcelo de Campos"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.12,<4.0"
+alembic = "^1.16.4"
+reflex = "^0.8.4"
+psycopg = "^3.2.9"
+psycopg-binary = "^3.2.9"
+psycopg-pool = "^3.2.6"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

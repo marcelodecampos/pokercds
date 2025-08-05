@@ -1,5 +1,7 @@
 # PokerCDS
 
+*Read this in other languages: [English](README.en.md), [Português](README.md)*
+
 Um sistema de controle financeiro para noites de poker entre amigos construído com Reflex.
 
 ## Visão Geral
@@ -62,7 +64,7 @@ PokerCDS é um sistema web para organizar e controlar a movimentação financeir
 
 ## Pré-requisitos
 
-- Python 3.8+
+- Python 3.12+
 - Node.js 16+ (para dependências do frontend)
 - PostgreSQL (banco de dados)
 
@@ -70,7 +72,7 @@ PokerCDS é um sistema web para organizar e controlar a movimentação financeir
 
 1. Clone o repositório:
 ```bash
-git clone https://github.com/[seu-usuario]/PokerCDS.git
+git clone https://github.com/marcelodecampos/PokerCDS.git
 cd PokerCDS
 ```
 

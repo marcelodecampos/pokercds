@@ -126,3 +126,61 @@ To start developing:
 ## License
 
 [Add your license information here]
+
+## Implemented Features
+
+### ✅ Authentication
+- **Login Screen**: Complete interface with CPF and password validation
+  - CPF field with visual mask
+  - Password field with character hiding
+  - CPF validation (11 digits required)
+  - Error handling with Portuguese messages
+  - Loading state during authentication
+  - Responsive design with gradient background
+
+### 🔄 In Development
+- Database integration for authentication
+- Main dashboard after login
+- Member management (administrators only)
+- Buy-in control system
+- Financial reports
+
+## Project Structure
+
+```
+PokerCDS/
+├── PokerCDS/
+│   ├── components/          # Reusable UI components
+│   │   ├── __init__.py
+│   │   └── login_form.py    # Login form
+│   ├── pages/              # Application pages
+│   │   ├── __init__.py
+│   │   └── login.py        # Login page
+│   ├── entities/           # Database models
+│   │   ├── __init__.py
+│   │   ├── base.py         # SQLModel base class
+│   │   └── member.py       # Member model
+│   ├── utils/              # Utilities
+│   │   ├── __init__.py
+│   │   ├── timezone.py     # Timezone functions
+│   │   └── password.py     # Password utilities
+│   └── PokerCDS.py         # Main application
+├── alembic/                # Database migrations
+├── rxconfig.py            # Reflex configuration
+└── README.md
+```
+
+## How to Test Login
+
+1. Run the application:
+```bash
+reflex run
+```
+
+2. Access `http://localhost:3000`
+
+3. Use the temporary credentials:
+   - CPF: `594.693.904-15` (or `59469390415`)
+   - Password: `admin123`
+
+**Note**: These are temporary credentials for development. In the final version, authentication will be done through the database with encrypted passwords.

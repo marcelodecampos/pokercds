@@ -3,6 +3,8 @@
 import reflex as rx
 
 from rxconfig import config
+from .pages.login import login_page
+from .pages.dashboard import dashboard_page
 
 
 class State(rx.State):
@@ -32,5 +34,18 @@ def index() -> rx.Component:
     )
 
 
-app = rx.App()
-app.add_page(index)
+# Create the main app with dark theme
+app = rx.App(
+    theme=rx.theme(
+        appearance="dark",
+        accent_color="sky",
+        gray_color="sand",
+        has_background=True,
+        radius="large",
+        scaling="100%",
+    )
+)
+
+# Add pages
+app.add_page(login_page)
+app.add_page(dashboard_page)

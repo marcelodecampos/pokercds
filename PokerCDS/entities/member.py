@@ -50,3 +50,12 @@ class Member(Base, table=True):
         if v is None:
             return v
         return hash_password(v)
+
+    def display_name(self) -> str:
+        """Return nickname if available, otherwise return name."""
+        return self.nickname if self.nickname else self.name
+    
+    def display_initials(self) -> str:
+        """Return initials for avatar display."""
+        display = self.display_name()
+        return display[0].upper() if display else "U"

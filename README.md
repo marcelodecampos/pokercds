@@ -40,6 +40,64 @@ PokerCDS é um sistema web para organizar e controlar a movimentação financeir
   - Relatório de quem deve e para quem deve pagar
   - Cálculo automático de acertos baseado em fichas vs garantias
 
+## Funcionalidades Implementadas
+
+### ✅ Autenticação
+- **Tela de Login**: Interface completa com validação de CPF e senha
+  - Campo CPF com máscara visual
+  - Campo senha com ocultação de caracteres
+  - Validação de CPF (11 dígitos obrigatórios)
+  - Tratamento de erros com mensagens em português
+  - Estado de carregamento durante autenticação
+  - Design responsivo com gradiente de fundo
+
+### 🔄 Em Desenvolvimento
+- Integração com banco de dados para autenticação
+- Dashboard principal após login
+- Gerenciamento de membros (apenas administradores)
+- Sistema de controle de cacifes
+- Relatórios financeiros
+
+## Estrutura do Projeto
+
+```
+PokerCDS/
+├── PokerCDS/
+│   ├── components/          # Componentes de UI reutilizáveis
+│   │   ├── __init__.py
+│   │   └── login_form.py    # Formulário de login
+│   ├── pages/              # Páginas da aplicação
+│   │   ├── __init__.py
+│   │   └── login.py        # Página de login
+│   ├── entities/           # Modelos de banco de dados
+│   │   ├── __init__.py
+│   │   ├── base.py         # Classe base SQLModel
+│   │   └── member.py       # Modelo de membro
+│   ├── utils/              # Utilitários
+│   │   ├── __init__.py
+│   │   ├── timezone.py     # Funções de timezone
+│   │   └── password.py     # Utilitários de senha
+│   └── PokerCDS.py         # Aplicação principal
+├── alembic/                # Migrações de banco de dados
+├── rxconfig.py            # Configuração do Reflex
+└── README.md
+```
+
+## Como Testar o Login
+
+1. Execute a aplicação:
+```bash
+reflex run
+```
+
+2. Acesse `http://localhost:3000`
+
+3. Use as credenciais temporárias:
+   - CPF: `594.693.904-15` (ou `59469390415`)
+   - Senha: `admin123`
+
+**Nota**: Estas são credenciais temporárias para desenvolvimento. Na versão final, a autenticação será feita através do banco de dados com senhas criptografadas.
+
 ## Regras do Sistema
 
 - Cada cacife custa exatamente R$ 50,00 e equivale ao mesmo valor em fichas

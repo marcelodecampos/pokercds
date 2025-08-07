@@ -8,7 +8,8 @@ This package contains all page components for the application.
 """
 
 from .login import login_page
-from .dashboard import dashboard_page
+from .profile import profile_page
+from .change_password import change_password_page
 
 __version__ = "1.0.0"
-__all__ = ["login_page", "dashboard_page"]
+__all__ = ["login_page", "profile_page", "change_password_page"]

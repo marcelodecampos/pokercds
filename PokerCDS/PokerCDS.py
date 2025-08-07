@@ -4,7 +4,8 @@ import reflex as rx
 
 from rxconfig import config
 from .pages.login import login_page
-from .pages.dashboard import dashboard_page
+from .pages.profile import profile_page
+from .pages.change_password import change_password_page
 
 
 class State(rx.State):
@@ -48,4 +49,5 @@ app = rx.App(
 
 # Add pages
 app.add_page(login_page)
-app.add_page(dashboard_page)
+app.add_page(profile_page)
+app.add_page(change_password_page)

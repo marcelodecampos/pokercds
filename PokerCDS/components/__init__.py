@@ -8,8 +8,8 @@ This package contains all UI components for the application.
 """
 
 from .login_form import LoginForm
-from .user_profile import UserProfile
-from .dashboard_menu import DashboardMenu
+from .member_form import MemberForm, MemberFormState
+from .password_form import PasswordForm, PasswordFormState
 
 __version__ = "1.0.0"
-__all__ = ["LoginForm", "UserProfile", "DashboardMenu"]
+__all__ = ["LoginForm", "MemberForm", "MemberFormState", "PasswordForm", "PasswordFormState"]

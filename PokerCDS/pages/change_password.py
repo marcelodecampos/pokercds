@@ -14,9 +14,7 @@ from ..state.auth_state import AuthState
 class ChangePasswordState(PasswordFormState):
     """State for change password page."""
     
-    def __init__(self):
-        super().__init__()
-        self.require_current_password = True
+    require_current_password: bool = True
     
     async def handle_submit(self):
         """Handle password change form submission."""

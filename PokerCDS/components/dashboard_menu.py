@@ -79,7 +79,7 @@ def DashboardMenu() -> rx.Component:
                 title="Gerenciar Membros",
                 description="Cadastrar e gerenciar membros do grupo",
                 icon="users",
-                route="/manage-members",
+                route="/members",
                 admin_only=True,
             ),
             MenuCard(

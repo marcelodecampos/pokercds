@@ -31,6 +31,11 @@ class AuthState(rx.State):
         display = self.user_display_name
         return display[0].upper() if display else "U"
     
+    @rx.var
+    def can_edit_nickname(self) -> bool:
+        """Return True if current user can edit nickname (only admins)."""
+        return self.is_admin
+    
     def login_user(self, user_data: dict):
         """Login user and set session data."""
         self.user_id = user_data.get("id")
@@ -38,7 +43,6 @@ class AuthState(rx.State):
         self.user_nickname = user_data.get("nickname", "")
         self.user_email = user_data.get("email", "")
         self.is_admin = user_data.get("is_admin", False)
-        self.debug_print_state()
         
     def logout_user(self):
         """Logout user and clear session data."""
@@ -47,7 +51,6 @@ class AuthState(rx.State):
         self.user_nickname = ""
         self.user_email = ""
         self.is_admin = False
-        self.debug_print_state()
         return rx.redirect("/")
 
     def debug_print_state(self, more_info: str | None = ""):
@@ -65,6 +68,5 @@ class AuthState(rx.State):
         
     def require_auth(self):
         """Redirect to login if not authenticated."""
-        self.debug_print_state("Redirect to login if not authenticated.")
         if not self.user_id:
             return rx.redirect("/")

@@ -17,4 +17,5 @@ def login_page() -> rx.Component:
         width="100%",
         min_height="100vh",
         background="linear-gradient(135deg, var(--sand-2) 0%, var(--sand-3) 100%)",
+        id="login-page",
     )

@@ -60,20 +60,24 @@ def change_password_page() -> rx.Component:
             rx.container(
                 rx.hstack(
                     rx.button(
-                        rx.icon("arrow-left", size=16),
+                        rx.icon("arrow-left", size=16, id="change-password-back-icon"),
                         "Voltar",
                         variant="outline",
                         on_click=lambda: rx.redirect("/profile"),
+                        id="change-password-back-button",
                     ),
-                    rx.heading("Alterar Senha", size="6"),
+                    rx.heading("Alterar Senha", size="6", id="change-password-page-title"),
                     justify="between",
                     align="center",
                     width="100%",
+                    id="change-password-header-content",
                 ),
                 max_width="1200px",
+                id="change-password-header-container",
             ),
             padding="1.5rem 0",
             width="100%",
+            id="change-password-header",
         ),
         
         # Main content
@@ -84,6 +88,7 @@ def change_password_page() -> rx.Component:
                     size="3",
                     text_align="center",
                     margin_bottom="2rem",
+                    id="change-password-description",
                 ),
                 
                 # Password form
@@ -98,10 +103,13 @@ def change_password_page() -> rx.Component:
                 spacing="4",
                 align="center",
                 width="100%",
+                id="change-password-main-content",
             ),
             max_width="1200px",
             padding="2rem",
+            id="change-password-main-container",
         ),
         
         min_height="100vh",
+        id="change-password-page",
     )

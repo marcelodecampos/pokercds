@@ -7,8 +7,9 @@ from .pages.login import login_page
 from .pages.dashboard import dashboard_page
 from .pages.profile import profile_page
 from .pages.change_password import change_password_page
-from .pages.member_registration import member_registration_page
 from .pages.members_management import members_management_page
+from .pages.games_management import games_management_page
+from .pages.game_buyins import game_buyins_page
 
 
 class State(rx.State):
@@ -55,5 +56,6 @@ app.add_page(login_page)
 app.add_page(dashboard_page)
 app.add_page(profile_page)
 app.add_page(change_password_page)
-app.add_page(member_registration_page)
 app.add_page(members_management_page)
+app.add_page(games_management_page)
+app.add_page(game_buyins_page)

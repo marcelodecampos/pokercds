@@ -18,9 +18,9 @@ class Member(Base, table=True):
     id: Optional[int] = Field(sa_column=Column(Integer, primary_key=True, autoincrement=True))
     cpf: str = Field(max_length=11, unique=True, index=True)
     name: str = Field(max_length=64)
-    nickname: str = Field(max_length=48)
-    email: str = Field(max_length=255)
-    pix_key: str = Field(max_length=128)
+    nickname: Optional[str] = Field(default=None, max_length=48)
+    email: Optional[str] = Field(default=None, max_length=255, unique=True)
+    pix_key: Optional[str] = Field(default=None, max_length=128)
     phone: Optional[str] = Field(default=None, max_length=20)
     password: Optional[str] = Field(default=None, max_length=128)  # bcrypt hashes are 60 chars
     is_admin: Optional[bool] = Field(default=False)

@@ -178,6 +178,11 @@ class MembersManagementState(rx.State):
         member = next((m for m in self.members if m["id"] == member_id), None)
         if member:
             self.open_edit_modal(member)
+    
+    def delete_single_member(self, member_id: int):
+        """Set single member for deletion and open modal."""
+        self.selected_members = [member_id]
+        self.show_delete_modal = True
 
 
 class MemberFormModalState(MemberFormState):
@@ -254,47 +259,57 @@ def MembersTable() -> rx.Component:
                     rx.checkbox(
                         checked=MembersManagementState.selected_members.length() == MembersManagementState.members.length(),
                         on_change=lambda _: MembersManagementState.toggle_select_all(),
+                        id="members-select-all-checkbox",
                     ),
-                    rx.text("Selecionar todos", size="2"),
+                    rx.text(
+                        "Selecionar todos", 
+                        size="2",
+                        id="members-select-all-text",
+                    ),
                     spacing="2",
                     align="center",
+                    id="members-select-all-container",
                 ),
                 rx.hstack(
                     rx.button(
-                        rx.icon("plus", size=16),
+                        rx.icon("plus", size=16, id="members-add-icon"),
                         "Novo Membro",
                         on_click=MembersManagementState.open_add_modal,
                         size="2",
+                        id="members-add-button",
                     ),
                     rx.button(
-                        rx.icon("trash-2", size=16),
-                        rx.text("Excluir (", MembersManagementState.selected_members.length(), ")"),
+                        rx.icon("trash-2", size=16, id="members-bulk-delete-icon"),
+                        rx.text("Excluir (", MembersManagementState.selected_members.length(), ")", id="members-bulk-delete-text"),
                         on_click=MembersManagementState.open_delete_modal,
                         disabled=MembersManagementState.selected_members.length() == 0,
                         color_scheme="red",
                         variant="outline",
                         size="2",
+                        id="members-bulk-delete-button",
                     ),
                     spacing="2",
+                    id="members-action-buttons",
                 ),
                 justify="between",
                 width="100%",
                 margin_bottom="1rem",
+                id="members-table-header",
             ),
             
             # Table
             rx.table.root(
                 rx.table.header(
                     rx.table.row(
-                        rx.table.column_header_cell(""),
-                        rx.table.column_header_cell("CPF"),
-                        rx.table.column_header_cell("Nome"),
-                        rx.table.column_header_cell("Apelido"),
-                        rx.table.column_header_cell("E-mail"),
-                        rx.table.column_header_cell("Status"),
-                        rx.table.column_header_cell("Admin"),
-                        rx.table.column_header_cell("Ações"),
+                        rx.table.column_header_cell("", id="members-table-header-checkbox"),
+                        rx.table.column_header_cell("Nome", id="members-table-header-name"),
+                        rx.table.column_header_cell("Apelido", id="members-table-header-nickname"),
+                        rx.table.column_header_cell("Status", id="members-table-header-status"),
+                        rx.table.column_header_cell("Admin", id="members-table-header-admin"),
+                        rx.table.column_header_cell("Ações", id="members-table-header-actions"),
+                        id="members-table-header-row",
                     ),
+                    id="members-table-header-section",
                 ),
                 rx.table.body(
                     rx.foreach(
@@ -304,43 +319,72 @@ def MembersTable() -> rx.Component:
                                 rx.checkbox(
                                     checked=MembersManagementState.selected_members.contains(member["id"]),
                                     on_change=lambda _: MembersManagementState.toggle_member_selection(member["id"]),
+                                    id=f"member-checkbox-{member['id']}",
                                 ),
+                                id=f"member-cell-checkbox-{member['id']}",
                             ),
-                            rx.table.cell(member["cpf"]),
-                            rx.table.cell(member["name"]),
-                            rx.table.cell(member["nickname"]),
-                            rx.table.cell(member["email"]),
+                            rx.table.cell(
+                                member["name"],
+                                id=f"member-cell-name-{member['id']}",
+                            ),
+                            rx.table.cell(
+                                member["nickname"],
+                                id=f"member-cell-nickname-{member['id']}",
+                            ),
                             rx.table.cell(
                                 rx.cond(
                                     member["is_enabled"],
-                                    rx.badge("Ativo", color_scheme="green"),
-                                    rx.badge("Inativo", color_scheme="red"),
+                                    rx.badge("Ativo", color_scheme="green", id=f"member-badge-active-{member['id']}"),
+                                    rx.badge("Inativo", color_scheme="red", id=f"member-badge-inactive-{member['id']}"),
                                 ),
+                                id=f"member-cell-status-{member['id']}",
                             ),
                             rx.table.cell(
                                 rx.cond(
                                     member["is_admin"],
-                                    rx.badge("Admin", color_scheme="blue"),
-                                    rx.text("Membro", size="2"),
+                                    rx.badge("Admin", color_scheme="blue", id=f"member-badge-admin-{member['id']}"),
+                                    rx.text("Membro", size="2", id=f"member-text-regular-{member['id']}"),
                                 ),
+                                id=f"member-cell-admin-{member['id']}",
                             ),
                             rx.table.cell(
-                                rx.button(
-                                    rx.icon("edit", size=14),
-                                    on_click=lambda: MembersManagementState.open_edit_modal_by_id(member["id"]),
-                                    variant="ghost",
-                                    size="1",
+                                rx.hstack(
+                                    rx.button(
+                                        rx.icon("pencil", size=14, id=f"member-edit-icon-{member['id']}"),
+                                        on_click=lambda: MembersManagementState.open_edit_modal_by_id(member["id"]),
+                                        variant="ghost",
+                                        size="1",
+                                        id=f"member-edit-button-{member['id']}",
+                                    ),
+                                    rx.button(
+                                        rx.icon("trash-2", size=14, id=f"member-delete-icon-{member['id']}"),
+                                        on_click=lambda: MembersManagementState.delete_single_member(member["id"]),
+                                        variant="ghost",
+                                        size="1",
+                                        color_scheme="red",
+                                        id=f"member-delete-button-{member['id']}",
+                                    ),
+                                    spacing="3",
+                                    id=f"member-actions-{member['id']}",
                                 ),
+                                id=f"member-cell-actions-{member['id']}",
                             ),
+                            id=f"member-row-{member['id']}",
                         ),
                     ),
+                    id="members-table-body",
                 ),
                 width="100%",
+                id="members-table",
             ),
             
             width="100%",
+            id="members-table-container",
         ),
         padding="1.5rem",
+        width="100%",
+        height="100%",
+        id="members-table-card",
     )
 
 
@@ -348,7 +392,7 @@ def AddMemberModal() -> rx.Component:
     """Modal for adding new member."""
     return rx.dialog.root(
         rx.dialog.content(
-            rx.dialog.title("Adicionar Novo Membro"),
+            rx.dialog.title("Adicionar Novo Membro", id="add-member-modal-title"),
             MemberForm(
                 form_state=MemberFormModalState,
                 title="",
@@ -358,8 +402,10 @@ def AddMemberModal() -> rx.Component:
                 on_cancel=MembersManagementState.close_add_modal,
             ),
             max_width="600px",
+            id="add-member-modal-content",
         ),
         open=MembersManagementState.show_add_modal,
+        id="add-member-modal",
     )
 
 
@@ -367,18 +413,21 @@ def EditMemberModal() -> rx.Component:
     """Modal for editing member."""
     return rx.dialog.root(
         rx.dialog.content(
-            rx.dialog.title("Editar Membro"),
+            rx.dialog.title("Editar Membro", id="edit-member-modal-title"),
             MemberForm(
                 form_state=MemberFormModalState,
                 title="",
                 show_admin_fields=True,
                 readonly_cpf=True,
+                readonly_nickname=False,  # Admin pode editar nickname
                 on_submit=MemberFormModalState.handle_edit_submit,
                 on_cancel=MembersManagementState.close_edit_modal,
             ),
             max_width="600px",
+            id="edit-member-modal-content",
         ),
         open=MembersManagementState.show_edit_modal,
+        id="edit-member-modal",
     )
 
 
@@ -386,18 +435,20 @@ def DeleteConfirmationModal() -> rx.Component:
     """Modal for delete confirmation."""
     return rx.dialog.root(
         rx.dialog.content(
-            rx.dialog.title("Confirmar Exclusão"),
+            rx.dialog.title("Confirmar Exclusão", id="delete-modal-title"),
             rx.vstack(
                 rx.text(
                     "Tem certeza que deseja excluir ",
                     MembersManagementState.selected_members.length(),
                     " membro(s) selecionado(s)?",
                     size="3",
+                    id="delete-modal-question",
                 ),
                 rx.text(
                     "Esta ação não pode ser desfeita.",
                     size="2",
                     color="red.500",
+                    id="delete-modal-warning",
                 ),
                 rx.hstack(
                     rx.button(
@@ -405,31 +456,38 @@ def DeleteConfirmationModal() -> rx.Component:
                         variant="outline",
                         on_click=MembersManagementState.close_delete_modal,
                         disabled=MembersManagementState.is_deleting,
+                        id="delete-modal-cancel-button",
                     ),
                     rx.button(
                         rx.cond(
                             MembersManagementState.is_deleting,
                             rx.hstack(
-                                rx.spinner(size="1"),
-                                rx.text("Excluindo..."),
+                                rx.spinner(size="1", id="delete-modal-spinner"),
+                                rx.text("Excluindo...", id="delete-modal-loading-text"),
                                 spacing="2",
+                                id="delete-modal-loading",
                             ),
-                            rx.text("Excluir"),
+                            rx.text("Excluir", id="delete-modal-confirm-text"),
                         ),
                         on_click=MembersManagementState.delete_selected_members,
                         color_scheme="red",
                         disabled=MembersManagementState.is_deleting,
+                        id="delete-modal-confirm-button",
                     ),
                     spacing="3",
                     justify="end",
                     width="100%",
+                    id="delete-modal-buttons",
                 ),
                 spacing="4",
                 width="100%",
+                id="delete-modal-content",
             ),
             max_width="400px",
+            id="delete-modal-dialog-content",
         ),
         open=MembersManagementState.show_delete_modal,
+        id="delete-confirmation-modal",
     )
 
 
@@ -442,20 +500,24 @@ def members_management_page() -> rx.Component:
             rx.container(
                 rx.hstack(
                     rx.button(
-                        rx.icon("arrow-left", size=16),
+                        rx.icon("arrow-left", size=16, id="members-back-icon"),
                         "Voltar",
                         variant="outline",
                         on_click=lambda: rx.redirect("/dashboard"),
+                        id="members-back-button",
                     ),
-                    rx.heading("Gerenciar Membros", size="6"),
+                    rx.heading("Gerenciar Membros", size="6", id="members-page-title"),
                     justify="between",
                     align="center",
                     width="100%",
+                    id="members-header-content",
                 ),
                 max_width="1200px",
+                id="members-header-container",
             ),
             padding="1.5rem 0",
             width="100%",
+            id="members-header",
         ),
         
         # Main content
@@ -468,6 +530,7 @@ def members_management_page() -> rx.Component:
                         MembersManagementState.error_message,
                         icon="alert-circle",
                         color_scheme="red",
+                        id="members-error-message",
                     ),
                 ),
                 rx.cond(
@@ -476,6 +539,7 @@ def members_management_page() -> rx.Component:
                         MembersManagementState.success_message,
                         icon="check-circle",
                         color_scheme="green",
+                        id="members-success-message",
                     ),
                 ),
                 
@@ -484,21 +548,25 @@ def members_management_page() -> rx.Component:
                     MembersManagementState.is_loading,
                     rx.center(
                         rx.vstack(
-                            rx.spinner(size="3"),
-                            rx.text("Carregando membros..."),
+                            rx.spinner(size="3", id="members-loading-spinner"),
+                            rx.text("Carregando membros...", id="members-loading-text"),
                             spacing="3",
                             align="center",
+                            id="members-loading-content",
                         ),
                         padding="4rem",
+                        id="members-loading-center",
                     ),
                     MembersTable(),
                 ),
                 
                 spacing="4",
                 width="100%",
+                id="members-main-content",
             ),
             max_width="1200px",
             padding="2rem",
+            id="members-main-container",
         ),
         
         # Modals
@@ -507,4 +575,5 @@ def members_management_page() -> rx.Component:
         DeleteConfirmationModal(),
         
         min_height="100vh",
+        id="members-management-page",
     )

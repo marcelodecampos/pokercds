@@ -43,66 +43,153 @@ def MenuCard(title: str, description: str, icon: str, route: str, admin_only: bo
 
 
 def DashboardMenu() -> rx.Component:
-    """Dashboard menu with all available options."""
+    """Dashboard menu with navigation cards."""
     return rx.vstack(
-        rx.heading(
-            "Menu Principal",
-            size="6",
-            margin_bottom="2rem",
-            color="gray.800",
+        # Admin section
+        rx.cond(
+            AuthState.is_admin,
+            rx.vstack(
+                rx.text(
+                    "Administração", 
+                    size="5", 
+                    font_weight="bold", 
+                    margin_bottom="1rem",
+                    id="dashboard-menu-admin-title",
+                ),
+                rx.grid(
+                    # Manage Members Card
+                    rx.card(
+                        rx.vstack(
+                            rx.icon("users", size=32, id="dashboard-menu-manage-icon"),
+                            rx.text(
+                                "Gerenciar Membros", 
+                                font_weight="bold", 
+                                size="4",
+                                id="dashboard-menu-manage-title",
+                            ),
+                            rx.text(
+                                "Visualizar e editar membros", 
+                                size="2", 
+                                text_align="center",
+                                id="dashboard-menu-manage-description",
+                            ),
+                            spacing="3",
+                            align="center",
+                            id="dashboard-menu-manage-content",
+                        ),
+                        on_click=lambda: rx.redirect("/members"),
+                        style={"cursor": "pointer", "_hover": {"transform": "scale(1.02)"}},
+                        padding="2rem",
+                        id="dashboard-menu-manage-card",
+                    ),
+                    
+                    # Manage Games Card
+                    rx.card(
+                        rx.vstack(
+                            rx.icon("calendar", size=32, id="dashboard-menu-games-icon"),
+                            rx.text(
+                                "Gerenciar Jogos", 
+                                font_weight="bold", 
+                                size="4",
+                                id="dashboard-menu-games-title",
+                            ),
+                            rx.text(
+                                "Visualizar e editar jogos", 
+                                size="2", 
+                                text_align="center",
+                                id="dashboard-menu-games-description",
+                            ),
+                            spacing="3",
+                            align="center",
+                            id="dashboard-menu-games-content",
+                        ),
+                        on_click=lambda: rx.redirect("/games"),
+                        style={"cursor": "pointer", "_hover": {"transform": "scale(1.02)"}},
+                        padding="2rem",
+                        id="dashboard-menu-games-card",
+                    ),
+                    
+                    columns="2",
+                    spacing="4",
+                    width="100%",
+                    id="dashboard-menu-admin-grid",
+                ),
+
+                spacing="3",
+                width="100%",
+                margin_bottom="3rem",
+                id="dashboard-menu-admin-section",
+            ),
         ),
         
-        # Main menu grid
+        # General section
+        rx.text(
+            "Funcionalidades", 
+            size="5", 
+            font_weight="bold", 
+            margin_bottom="1rem",
+            id="dashboard-menu-general-title",
+        ),
         rx.grid(
-            # Game-related options
-            MenuCard(
-                title="Meus Jogos",
-                description="Visualizar histórico dos seus jogos e resultados",
-                icon="dice-6",
-                route="/my-games",
-            ),
-            MenuCard(
-                title="Lista de Jogos",
-                description="Ver todos os jogos e participantes",
-                icon="list",
-                route="/games-list",
-            ),
-            MenuCard(
-                title="Resultados",
-                description="Consultar resultados e estatísticas",
-                icon="trophy",
-                route="/results",
-            ),
-            
-            # Admin-only options
-            MenuCard(
-                title="Gerenciar Membros",
-                description="Cadastrar e gerenciar membros do grupo",
-                icon="users",
-                route="/members",
-                admin_only=True,
-            ),
-            MenuCard(
-                title="Novo Jogo",
-                description="Iniciar uma nova sessão de poker",
-                icon="plus-circle",
-                route="/new-game",
-                admin_only=True,
-            ),
-            MenuCard(
-                title="Relatórios",
-                description="Relatórios financeiros e estatísticas gerais",
-                icon="bar-chart-3",
-                route="/reports",
-                admin_only=True,
+            # Profile Card
+            rx.card(
+                rx.vstack(
+                    rx.icon("user", size=32, id="dashboard-menu-profile-icon"),
+                    rx.text(
+                        "Meu Perfil", 
+                        font_weight="bold", 
+                        size="4",
+                        id="dashboard-menu-profile-title",
+                    ),
+                    rx.text(
+                        "Visualizar e editar meus dados", 
+                        size="2", 
+                        text_align="center",
+                        id="dashboard-menu-profile-description",
+                    ),
+                    spacing="3",
+                    align="center",
+                    id="dashboard-menu-profile-content",
+                ),
+                on_click=lambda: rx.redirect("/profile"),
+                style={"cursor": "pointer", "_hover": {"transform": "scale(1.02)"}},
+                padding="2rem",
+                id="dashboard-menu-profile-card",
             ),
             
-            columns="3",
-            gap="1.5rem",
+            # Change Password Card
+            rx.card(
+                rx.vstack(
+                    rx.icon("key", size=32, id="dashboard-menu-password-icon"),
+                    rx.text(
+                        "Trocar Senha", 
+                        font_weight="bold", 
+                        size="4",
+                        id="dashboard-menu-password-title",
+                    ),
+                    rx.text(
+                        "Alterar minha senha de acesso", 
+                        size="2", 
+                        text_align="center",
+                        id="dashboard-menu-password-description",
+                    ),
+                    spacing="3",
+                    align="center",
+                    id="dashboard-menu-password-content",
+                ),
+                on_click=lambda: rx.redirect("/change-password"),
+                style={"cursor": "pointer", "_hover": {"transform": "scale(1.02)"}},
+                padding="2rem",
+                id="dashboard-menu-password-card",
+            ),
+            
+            columns="2",
+            spacing="4",
             width="100%",
+            id="dashboard-menu-general-grid",
         ),
         
         spacing="4",
-        align="center",
         width="100%",
+        id="dashboard-menu-container",
     )

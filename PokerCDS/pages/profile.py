@@ -81,20 +81,24 @@ def profile_page() -> rx.Component:
             rx.container(
                 rx.hstack(
                     rx.button(
-                        rx.icon("arrow-left", size=16),
+                        rx.icon("arrow-left", size=16, id="profile-back-icon"),
                         "Voltar",
                         variant="outline",
                         on_click=lambda: rx.redirect("/dashboard"),
+                        id="profile-back-button",
                     ),
-                    rx.heading("Meu Perfil", size="6"),
+                    rx.heading("Meu Perfil", size="6", id="profile-page-title"),
                     justify="between",
                     align="center",
                     width="100%",
+                    id="profile-header-content",
                 ),
                 max_width="1200px",
+                id="profile-header-container",
             ),
             padding="1.5rem 0",
             width="100%",
+            id="profile-header",
         ),
         
         # Main content
@@ -105,6 +109,7 @@ def profile_page() -> rx.Component:
                     size="3",
                     text_align="center",
                     margin_bottom="2rem",
+                    id="profile-description",
                 ),
                 
                 # Profile form
@@ -113,6 +118,7 @@ def profile_page() -> rx.Component:
                     title="Meus Dados",
                     show_admin_fields=False,
                     readonly_cpf=True,
+                    readonly_nickname=True,
                     on_submit=ProfileState.handle_submit,
                     on_cancel=ProfileState.handle_cancel,
                 ),
@@ -120,10 +126,13 @@ def profile_page() -> rx.Component:
                 spacing="4",
                 align="center",
                 width="100%",
+                id="profile-main-content",
             ),
             max_width="1200px",
             padding="2rem",
+            id="profile-main-container",
         ),
         
         min_height="100vh",
+        id="profile-page",
     )

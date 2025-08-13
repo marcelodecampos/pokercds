@@ -109,6 +109,7 @@ def LoginForm() -> rx.Component:
                 margin_bottom="2rem",
                 text_align="center",
                 color="accent.9",
+                id="login-form-logo",
             ),
             
             # Subtitle
@@ -118,6 +119,7 @@ def LoginForm() -> rx.Component:
                 margin_bottom="3rem",
                 text_align="center",
                 color="gray.11",
+                id="login-form-subtitle",
             ),
             
             # Login Form
@@ -128,6 +130,7 @@ def LoginForm() -> rx.Component:
                         size="6",
                         margin_bottom="1.5rem",
                         text_align="center",
+                        id="login-form-title",
                     ),
                     
                     # CPF Input
@@ -136,6 +139,7 @@ def LoginForm() -> rx.Component:
                             "CPF",
                             size="3",
                             font_weight="medium",
+                            id="login-form-cpf-label",
                         ),
                         rx.input(
                             placeholder="000.000.000-00",
@@ -144,9 +148,11 @@ def LoginForm() -> rx.Component:
                             size="3",
                             width="100%",
                             max_length=14,
+                            id="login-form-cpf-input",
                         ),
                         width="100%",
                         spacing="1",
+                        id="login-form-cpf-field",
                     ),
                     
                     # Password Input
@@ -155,17 +161,25 @@ def LoginForm() -> rx.Component:
                             "Senha",
                             size="3",
                             font_weight="medium",
+                            id="login-form-password-label",
                         ),
                         rx.input(
                             placeholder="Digite sua senha",
                             type="password",
                             value=LoginState.password,
                             on_change=LoginState.set_password,
+                            on_key_down=lambda key: rx.cond(
+                                key == "Enter",
+                                LoginState.handle_login(),
+                                rx.noop()
+                            ),
                             size="3",
                             width="100%",
+                            id="login-form-password-input",
                         ),
                         width="100%",
                         spacing="1",
+                        id="login-form-password-field",
                     ),
                     
                     # Error Message
@@ -176,6 +190,7 @@ def LoginForm() -> rx.Component:
                             color="red.500",
                             size="2",
                             text_align="center",
+                            id="login-form-error-message",
                         ),
                     ),
                     
@@ -184,24 +199,28 @@ def LoginForm() -> rx.Component:
                         rx.cond(
                             LoginState.is_loading,
                             rx.hstack(
-                                rx.spinner(size="1"),
-                                rx.text("Entrando..."),
+                                rx.spinner(size="1", id="login-form-loading-spinner"),
+                                rx.text("Entrando...", id="login-form-loading-text"),
                                 spacing="2",
+                                id="login-form-loading-content",
                             ),
-                            rx.text("Entrar"),
+                            rx.text("Entrar", id="login-form-button-text"),
                         ),
                         on_click=LoginState.handle_login,
                         size="3",
                         width="100%",
                         disabled=LoginState.is_loading,
                         color_scheme="blue",
+                        id="login-form-submit-button",
                     ),
                     
                     spacing="4",
                     width="100%",
+                    id="login-form-fields",
                 ),
                 max_width="400px",
                 padding="2rem",
+                id="login-form-card",
             ),
             
             # Footer Info
@@ -211,6 +230,7 @@ def LoginForm() -> rx.Component:
                 color="gray.9",
                 text_align="center",
                 margin_top="2rem",
+                id="login-form-footer",
             ),
             
             spacing="4",
@@ -218,8 +238,10 @@ def LoginForm() -> rx.Component:
             width="100%",
             min_height="100vh",
             justify="center",
+            id="login-form-content",
         ),
         padding="2rem",
         max_width="500px",
         margin="0 auto",
+        id="login-form-container",
     )

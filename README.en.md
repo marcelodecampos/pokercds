@@ -51,7 +51,9 @@ PokerCDS is a web system to organize and control financial transactions during p
 - System access is done through CPF and password
 - There's no self-registration option on the login screen
 - Disabled members cannot access the system
-- Required registration fields: CPF, name, PIX key and phone
+- Required registration fields: CPF, name, nickname, PIX key and phone
+- **NEW**: Only administrators can edit member nicknames
+- Regular users can edit their own data, except CPF and nickname
 - **Buy-in Payment Methods:**
   - Cash: immediate payment of R$ 50.00
   - Card: left as guarantee equivalent to R$ 50.00
@@ -130,20 +132,59 @@ To start developing:
 ## Implemented Features
 
 ### ✅ Authentication
-- **Login Screen**: Complete interface with CPF and password validation
-  - CPF field with visual mask
-  - Password field with character hiding
-  - CPF validation (11 digits required)
-  - Error handling with Portuguese messages
-  - Loading state during authentication
-  - Responsive design with gradient background
+- Login Screen: Complete interface with CPF and password validation
+- Login button for system access
+- No self-registration option for members
+- Member registration for poker group (administrators only)
+- Permission system with multiple administrators
 
-### 🔄 In Development
-- Database integration for authentication
-- Main dashboard after login
-- Member management (administrators only)
-- Buy-in control system
-- Financial reports
+### ✅ User Management
+- **User Profile**: 
+  - View and edit personal data
+  - Editable fields: name, email, PIX key, phone
+  - Non-editable fields: CPF (always), nickname (only admin can change)
+- **Password Change**: Secure system for password modification
+- **Member Management (Admin)**:
+  - Paginated member listing (maximum 20 per page)
+  - Complete CRUD: create, view, edit, delete
+  - Multiple selection for bulk deletion
+  - Permission control (admin/active member/inactive)
+  - Administrators can edit all fields, including nicknames
+
+### ✅ Games Management (Admin)
+- **Games Listing**: 
+  - Games ordered by descending date (most recent first)
+  - Display of date and optional description
+  - Pagination up to 20 games per page
+- **Games CRUD**:
+  - Create new games with date and description
+  - Edit existing games
+  - Delete individual games or in bulk
+  - Multiple selection for bulk operations
+- **Validations**: Required date, optional description
+
+## Permissions and Access Control
+
+### Regular Users:
+- View and edit own profile (except CPF and nickname)
+- Change own password
+- Access poker features (when implemented)
+
+### Administrators:
+- All regular user permissions
+- Register new members
+- Manage all members (complete CRUD)
+- Change any member's nickname
+- Activate/deactivate members
+- Grant/revoke administrator privileges
+- **Manage games**: Create, edit, view and delete games
+- **Session control**: Access to game-member relationship
+
+### Fields with Restrictions:
+- **CPF**: Cannot be changed after registration
+- **Nickname**: Only administrators can modify
+- **Admin Permissions**: Only administrators can modify
+- **Active/Inactive Status**: Only administrators can modify
 
 ## Project Structure
 
@@ -184,3 +225,45 @@ reflex run
    - Password: `admin123`
 
 **Note**: These are temporary credentials for development. In the final version, authentication will be done through the database with encrypted passwords.
+
+## Development Standards
+
+### Code and Architecture
+- Follow DRY (Don't Repeat Yourself) principles for reusable components
+- Clear separation between business logic (State) and presentation (Components)
+- Centralized validations in base states
+- Configurable components through props
+- **NEW**: All Reflex components must have a unique and representative ID
+- IDs must follow hierarchical and descriptive convention (e.g., `members-table-card`, `login-form-submit-button`)
+
+### Interface and UX
+- Responsive design with dark theme by default
+- Theme colors: dark appearance, sky accent color, sand gray color
+- Error and success messages in Portuguese
+- Visible loading states during asynchronous operations
+- Confirmation before destructive actions (deletions)
+
+## Benefits of Unique IDs
+
+### Development and Maintenance:
+- **HTML Inspection**: Elements easily identifiable in browser DevTools
+- **Debugging**: Quick identification of issues in specific components
+- **Automated Testing**: Specific and reliable selectors for each element
+- **Analytics**: Detailed tracking of user interactions
+
+### Naming Convention:
+- `page-*` for main page elements
+- `component-*` for specific component elements
+- `modal-*` for modal and dialog elements
+- `*-button`, `*-icon`, `*-text` for specific element types
+- `item-*-{id}` for specific items in lists
+
+### Examples:
+```html
+<!-- Members management page -->
+<div id="members-management-page">
+  <div id="members-table-card">
+    <button id="members-add-button">
+    <div id="member-row-1">
+      <button id="member-edit-button-1">
+      <button id="member-delete-button-1">

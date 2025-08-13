@@ -123,6 +123,7 @@ def MemberForm(
     title: str = "Dados do Membro",
     show_admin_fields: bool = False,
     readonly_cpf: bool = False,
+    readonly_nickname: bool = False,
     on_submit: Optional[Callable] = None,
     on_cancel: Optional[Callable] = None,
 ) -> rx.Component:
@@ -134,6 +135,7 @@ def MemberForm(
         title: Form title
         show_admin_fields: Whether to show admin-only fields (is_admin, is_enabled)
         readonly_cpf: Whether CPF field should be readonly
+        readonly_nickname: Whether nickname field should be readonly
         on_submit: Submit handler function
         on_cancel: Cancel handler function
     """
@@ -184,18 +186,37 @@ def MemberForm(
         ),
         
         # Nickname Field
-        rx.vstack(
-            rx.text("Apelido", size="3", font_weight="medium"),
-            rx.input(
-                placeholder="Digite o apelido",
-                value=form_state.nickname,
-                on_change=form_state.set_nickname,
-                size="3",
+        rx.cond(
+            readonly_nickname,
+            rx.vstack(
+                rx.text("Apelido", size="3", font_weight="medium"),
+                rx.input(
+                    value=form_state.nickname,
+                    size="3",
+                    width="100%",
+                    disabled=True,
+                ),
+                rx.text(
+                    "Apenas administradores podem alterar o apelido",
+                    size="1",
+                    color="gray.9",
+                ),
                 width="100%",
-                max_length=48,
+                spacing="1",
             ),
-            width="100%",
-            spacing="1",
+            rx.vstack(
+                rx.text("Apelido", size="3", font_weight="medium"),
+                rx.input(
+                    placeholder="Digite o apelido",
+                    value=form_state.nickname,
+                    on_change=form_state.set_nickname,
+                    size="3",
+                    width="100%",
+                    max_length=48,
+                ),
+                width="100%",
+                spacing="1",
+            ),
         ),
         
         # Email Field

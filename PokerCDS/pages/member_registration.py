@@ -145,7 +145,7 @@ def MemberRegistrationForm() -> rx.Component:
                     spacing="1",
                 ),
                 
-                # Nickname Field
+                # Nickname Field (sem restrição no cadastro)
                 rx.vstack(
                     rx.text("Apelido", size="3", font_weight="medium"),
                     rx.input(

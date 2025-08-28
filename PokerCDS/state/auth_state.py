@@ -8,6 +8,7 @@ Authentication state management.
 import reflex as rx
 from typing import Optional
 from ..utils.timezone import now
+from ..models.user_data import UserData
 
 
 class AuthState(rx.State):
@@ -36,14 +37,32 @@ class AuthState(rx.State):
         """Return True if current user can edit nickname (only admins)."""
         return self.is_admin
     
-    def login_user(self, user_data: dict):
+    def login_user(self, user_data: UserData | dict):
         """Login user and set session data."""
-        self.user_id = user_data.get("id")
-        self.user_name = user_data.get("name", "")
-        self.user_nickname = user_data.get("nickname", "")
-        self.user_email = user_data.get("email", "")
-        self.is_admin = user_data.get("is_admin", False)
-        
+        if isinstance(user_data, dict):
+            user = UserData.from_dict(user_data)
+        else:
+            user = user_data
+            
+        self.user_id = user.id
+        self.user_name = user.name
+        self.user_nickname = user.nickname or ""
+        self.user_email = user.email or ""
+        self.is_admin = user.is_admin
+    
+    def get_current_user(self) -> Optional[UserData]:
+        """Get current user as UserData object."""
+        if not self.user_id:
+            return None
+            
+        return UserData(
+            id=self.user_id,
+            name=self.user_name,
+            nickname=self.user_nickname or None,
+            email=self.user_email or None,
+            is_admin=self.is_admin,
+        )
+    
     def logout_user(self):
         """Logout user and clear session data."""
         self.user_id = None

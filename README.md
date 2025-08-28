@@ -197,7 +197,12 @@ reflex init
 reflex run
 ```
 
-2. Abra seu navegador e navegue para `http://localhost:3000`
+2. Para desenvolvimento com logs detalhados:
+```bash
+reflex run --env dev --loglevel debug
+```
+
+3. Abra seu navegador e navegue para `http://localhost:3000`
 
 ## Configuração
 
@@ -211,7 +216,18 @@ Para começar a desenvolver:
 
 1. Faça suas alterações nos arquivos Python
 2. A aplicação irá recarregar automaticamente com hot reloading habilitado
-3. Visite o servidor de desenvolvimento local para ver suas alterações
+3. Execute com logs de debug para troubleshooting:
+   ```bash
+   reflex run --env dev --loglevel debug
+   ```
+4. Visite o servidor de desenvolvimento local para ver suas alterações
+
+### Comandos Úteis para Debug
+
+- **Desenvolvimento normal**: `reflex run`
+- **Debug completo**: `reflex run --env dev --loglevel debug`
+- **Verificar configuração**: `reflex config`
+- **Limpar cache**: `reflex clean`
 
 ## Contribuindo
 

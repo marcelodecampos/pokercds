@@ -43,11 +43,11 @@ def index() -> rx.Component:
 app = rx.App(
     theme=rx.theme(
         appearance="dark",
-        accent_color="sky",
-        gray_color="sand",
+        #accent_color="sky",
+        #gray_color="sand",
         has_background=True,
-        radius="large",
-        scaling="100%",
+        #radius="large",
+        #scaling="100%",
     )
 )
 

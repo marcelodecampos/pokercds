@@ -9,6 +9,7 @@ import reflex as rx
 import asyncio
 from typing import Optional
 from ..state.auth_state import AuthState
+from ..models.user_data import UserData
 
 
 class LoginState(rx.State):
@@ -44,18 +45,18 @@ class LoginState(rx.State):
         
         return True, clean_cpf
     
-    def _validate_credentials(self, clean_cpf: str) -> dict | None:
+    def _validate_credentials(self, clean_cpf: str) -> UserData | None:
         """Validate user credentials and return user data if valid."""
         # Temporary validation (replace with actual database check)
         if clean_cpf == "59469390415" and self.password == "admin123":
             # Return user session data (temporary - replace with database query)
-            user_data = {
-                "id": 1,
-                "name": "Marcelo de Campos",
-                "nickname": "That's Poker",
-                "email": "sr.marcelo.campos@gmail.com",
-                "is_admin": True,
-            }
+            user_data = UserData(
+                id=1,
+                name="Marcelo de Campos",
+                nickname="That's Poker",
+                email="sr.marcelo.campos@gmail.com",
+                is_admin=True,
+            )
             print("DEBUG: Credentials validated, returning user_data:", user_data)
             return user_data
         

@@ -102,7 +102,12 @@ reflex init
 reflex run
 ```
 
-2. Open your browser and navigate to `http://localhost:3000`
+2. For development with detailed logs:
+```bash
+reflex run --env dev --loglevel debug
+```
+
+3. Open your browser and navigate to `http://localhost:3000`
 
 ## Configuration
 
@@ -115,8 +120,19 @@ The application uses Reflex with the following plugins:
 To start developing:
 
 1. Make your changes to Python files
-2. The app will automatically reload with hot reloading enabled
-3. Visit the local development server to see your changes
+2. The application will automatically reload with hot reloading enabled
+3. Run with debug logs for troubleshooting:
+   ```bash
+   reflex run --env dev --loglevel debug
+   ```
+4. Visit the local development server to see your changes
+
+### Useful Debug Commands
+
+- **Normal development**: `reflex run`
+- **Full debug**: `reflex run --env dev --loglevel debug`
+- **Check configuration**: `reflex config`
+- **Clear cache**: `reflex clean`
 
 ## Contributing
 
